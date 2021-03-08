@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>888</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGroupBox" name="groupBox_valveControl">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>180</y>
+      <width>311</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Valve Control</string>
+    </property>
+    <widget class="QGroupBox" name="groupBox_3WayValve">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>281</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>3-Way-Valve</string>
+     </property>
+     <widget class="QSlider" name="horizontalSlider_3WayValve">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>181</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox_3WayValve">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>48</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_MassFlowValve">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>281</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Mass Flow Valve</string>
+     </property>
+     <widget class="QSlider" name="horizontalSlider_MassFlowValve">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>171</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox_MassFlowValve">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>40</y>
+        <width>48</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_ShutDown">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>470</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Shut Down</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_Automation">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>831</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Automation</string>
+    </property>
+    <widget class="QPushButton" name="pushButton_StartAutomation">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>50</y>
+       <width>291</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start Automation</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_StopAutomation">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>110</y>
+       <width>291</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop Automation</string>
+     </property>
+    </widget>
+    <widget class="QTableView" name="tableView_Automation">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>491</width>
+       <height>131</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>200</y>
+      <width>501</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>888</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionLoad_Automation"/>
+    <addaction name="actionSave_Data"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionScreenshot"/>
+    <addaction name="actionReset"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLoad_Automation">
+   <property name="text">
+    <string>Load Automation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionSave_Data">
+   <property name="text">
+    <string>Save Data</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionScreenshot">
+   <property name="text">
+    <string>Screenshot</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
