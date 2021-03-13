@@ -37,7 +37,7 @@ timeTriggerConntrolling = 0.1
 
 global timeTriggerCanvasUpdate
 #in seconds
-timeTriggerCanvasUpdate = 1
+timeTriggerCanvasUpdate = 1#1
 
 global switchOffMaxT
 #in °C

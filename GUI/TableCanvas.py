@@ -22,6 +22,7 @@ class tableCanvas(QTableWidget):
         self.automationRunFlag = False
         self.dataLoaded = False
         self.tcDesiredPower = 0
+        self.tcDesiredTemp = 0
         timeInMin = True
         if timeInMin:
             self.timeFactor = 60
@@ -83,7 +84,8 @@ class tableCanvas(QTableWidget):
         i = 0
         while ((self.automationRunFlag==True) and (i< self.numberOfRows)):
             self.tcDesiredPower = self.dataArr[i, 1]
-            self.desiredSleepTime = self.timeFactor*self.dataArr[i,2]
+            self.tcDesiredTemp = self.dataArr[i, 2]
+            self.desiredSleepTime = self.timeFactor*self.dataArr[i,3]
             print("DESIRED SLEEP TIME")
             print(self.desiredSleepTime)
             print("/n/n")
@@ -100,6 +102,8 @@ class tableCanvas(QTableWidget):
 
     def getCurrentSetVal(self):
         return self.tcDesiredPower
+    def getCurrentSetTempVal(self):
+        return self.tcDesiredTemp
 
     def stopAutomation(self):
         self.automationRunFlag == False

@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1600</width>
+    <height>788</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>2</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1600</width>
+    <height>1024</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(62, 62, 62, 255), stop:1 rgba(114, 114, 114, 255));</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="maximumSize">
+    <size>
+     <width>1600</width>
+     <height>1024</height>
+    </size>
+   </property>
+   <widget class="QGroupBox" name="groupBox_Plot">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>961</width>
+      <height>711</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>2880</width>
+      <height>1800</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(86, 170, 255, 125), stop:1 rgba(255, 255, 255, 50));
+border-radius: 5px;
+font: 20pt &quot;Avenir&quot;;
+</string>
+    </property>
+    <property name="title">
+     <string>Plot</string>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>931</width>
+       <height>631</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout"/>
+    </widget>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>0</y>
+      <width>611</width>
+      <height>431</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 20pt &quot;Avenir&quot;;</string>
+    </property>
+    <property name="currentIndex">
+     <number>2</number>
+    </property>
+    <widget class="QWidget" name="globalControlTab">
+     <attribute name="title">
+      <string>Global</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox_valveControl">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>591</width>
+        <height>401</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 255, 125), stop:1 rgba(255, 255, 255, 50));
+border-radius: 5px;
+</string>
+      </property>
+      <property name="title">
+       <string>Valve Control</string>
+      </property>
+      <widget class="QPushButton" name="pushButton_ShutDown_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>300</y>
+         <width>571</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200,200,200, 100), stop:1 rgba(255, 255, 255, 80));
+border-radius: 10px;</string>
+       </property>
+       <property name="text">
+        <string>Shut Down</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_MassFlowValve_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>180</y>
+         <width>571</width>
+         <height>111</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Mass Flow Valve</string>
+       </property>
+       <widget class="QSpinBox" name="spinBox_MassFlowValve_2">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>30</y>
+          <width>71</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(200,200,200);
+border-radius: 1px;</string>
+        </property>
+       </widget>
+       <widget class="QSlider" name="horizontalSlider_MassFlowValve_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>451</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(200,200,200);
+border-radius: 10px;</string>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_3WayValve_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>571</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>3-Way-Valve</string>
+       </property>
+       <widget class="QSlider" name="horizontalSlider_3WayValve_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>451</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(200,200,200);
+border-radius: 10px;</string>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinBox_3WayValve_2">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>40</y>
+          <width>71</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(200,200,200);
+border-radius: 1px;</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="automationTab">
+     <attribute name="title">
+      <string>Automation</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox_Automation">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>601</width>
+        <height>401</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 255, 125), stop:1 rgba(255, 255, 255, 50));
+border-radius: 5px;
+</string>
+      </property>
+      <property name="title">
+       <string>Automation</string>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>551</width>
+         <height>261</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="tableWidget"/>
+      </widget>
+      <widget class="QPushButton" name="pushButton_StartAutomation">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>320</y>
+         <width>271</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(28, 255, 13, 125), stop:1 rgba(255, 255, 255, 255));
+
+border-radius: 10px;</string>
+       </property>
+       <property name="text">
+        <string>Start Automation</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_StopAutomation">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>320</y>
+         <width>251</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(252, 52, 80, 255), stop:1 rgba(255, 255, 255, 255));
+border-radius: 10px;</string>
+       </property>
+       <property name="text">
+        <string>Stop Automation</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="mqttConnectiontab">
+     <attribute name="title">
+      <string>MQTT-Con.</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox_MQTT_Settings">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>601</width>
+        <height>401</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 255, 125), stop:1 rgba(255, 255, 255, 50));
+border-radius: 5px;
+</string>
+      </property>
+      <property name="title">
+       <string>MQTT-Settings</string>
+      </property>
+      <widget class="QLineEdit" name="lineEdit_MqttBroker">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>50</y>
+         <width>351</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>myBroker</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_Port">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>120</y>
+         <width>351</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>myPort</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_Topic">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>190</y>
+         <width>351</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>myTopic</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_MqttBroker">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>211</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>MQTT-Broker:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_Port">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>211</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Port:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_Topic">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>190</y>
+         <width>211</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Topic:</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_ConnectMQTT">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>330</y>
+         <width>251</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(28, 255, 13, 125), stop:1 rgba(255, 255, 255, 255));
+
+border-radius: 10px;</string>
+       </property>
+       <property name="text">
+        <string>Connect</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_DisconnectMQTT">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>330</y>
+         <width>241</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(252, 52, 80, 255), stop:1 rgba(255, 255, 255, 255));
+border-radius: 10px;</string>
+       </property>
+       <property name="text">
+        <string>Disconnect</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_State">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>260</y>
+         <width>211</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>State:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_ConnectionState">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>260</y>
+         <width>351</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Connection State</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>450</y>
+      <width>601</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1024</width>
+      <height>600</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 255, 125), stop:1 rgba(255, 255, 255, 50));
+border-radius: 5px;
+font: 20pt &quot;Avenir&quot;;
+</string>
+    </property>
+    <property name="title">
+     <string>Plot Control</string>
+    </property>
+    <widget class="QGroupBox" name="groupBox_CropPlot">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>571</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Crop plot by x elements</string>
+     </property>
+     <widget class="QSpinBox" name="spinBox_CropPlot">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>40</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(200,200,200,125);
+border-radius: 1px;</string>
+      </property>
+      <property name="minimum">
+       <number>10</number>
+      </property>
+     </widget>
+     <widget class="QSlider" name="horizontalSlider_CropPlot">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>281</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(200,200,200,125);
+border-radius: 10px;
+</string>
+      </property>
+      <property name="minimum">
+       <number>10</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_CropPlot">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>40</y>
+        <width>181</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200,200,200, 100), stop:1 rgba(255, 255, 255, 80));
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Crop</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_PlotSwitch">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>571</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Plot Selection</string>
+     </property>
+     <widget class="QRadioButton" name="radioButton_PlotSwitchPower">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>10</y>
+        <width>141</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(200,200,200,125);
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Power</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButton_PlotSwitchTemperatur">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>10</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(200,200,200,125);
+border-radius: 10px;
+</string>
+      </property>
+      <property name="text">
+       <string>Temp</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1600</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionLoad_Automation"/>
+    <addaction name="actionSave_Data"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionScreenshot"/>
+    <addaction name="actionReset"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLoad_Automation">
+   <property name="text">
+    <string>Load Automation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionSave_Data">
+   <property name="text">
+    <string>Save Data</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionScreenshot">
+   <property name="text">
+    <string>Screenshot</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

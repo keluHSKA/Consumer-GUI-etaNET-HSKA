@@ -28,6 +28,7 @@ from PyQt5.QtWidgets import *
 from GUI import Container
 import random
 import paho.mqtt.client as mqtt
+from controling import saturationPID
 
 from connections import mqttNetwork
 
@@ -97,7 +98,8 @@ class etaMainApplication(UI.Ui_MainWindow):
     def init(self):
         self.initArrays()
         self.HeatMeter = HeatMeter(self.netconn)
-        self.desiredPower = 50
+        self.desiredPower = 0
+        self.desiredTemp = 0
         self.plotType = "Power"
         self.cropPlotVar = 10
         self.cropFlag = False
@@ -123,15 +125,21 @@ class etaMainApplication(UI.Ui_MainWindow):
         self.mqttConnectedFlag = False
         self.loadAutomationData()
         ###
-        #self.TempPID = PID(P=1, D=0, I=0.1)
+        self.TempPID = PID(P=1, D=0.01, I=0.1)
         #self.TempPID = PID(P=0.6377, D=0.44877, I=0.4263)
-        self.TempPID = PID(P=0.201713, D=0.0809676, I=0.04764574)#flachNormiert
+        #self.TempPID = PID(P=0.201713, D=0.0809676, I=0.04764574)#flachNormiert
+        #self.TempPID = PID(P=0.201713, D=0.0809676, I=0.4764574)#flachNormiert
+        #self.TempPID = PID(P=20.1713, D=8.09676, I=4.764574)#flachNormiert
+        #self.TempPID = PID(P=36.67, D=14.72, I=8.66)#temp Normiert
         #self.TempPID = PID(P=0.226, D=0.09072, I=0.05338)
         #self.TempPID = PID(P=0.923, D=0.792, I=0.349)#flach
         #self.TempPID = PID(P=0.226, D=0.09072, I=0.05338)#noormiert auf 14°C
-        self.TempPID.setSampleTime(parameter.timeTriggerCanvasUpdate)
+        #self.TempPID.setSampleTime(parameter.timeTriggerCanvasUpdate)
+        self.FlowPID = PID(P=1,D=0.01,I=0.1)
         #self.FlowPID = PID(P=0.6377, D=0.44877, I=0.4263)
-        self.FlowPID = PID(P=0.201713, D=0.0809676, I=0.04764574)#flachNormiert
+        #self.FlowPID = PID(P=0.201713, D=0.0809676, I=0.04764574)#flachNormiert
+        #self.FlowPID = PID(P=0.201713, D=0.0809676, I=0.4764574)#flachNormiert
+        #self.FlowPID = PID(P=0.201713, D=0.0809676, I=0.04764574)#flachNormiert
         #self.FlowPID = PID(P=3.164, D=1.27, I=0.747)#flach
         #self.FlowPID = PID(P=0.00077103, D=0.00031752, I=0.00018685)#normiert auf 4000
         self.FlowPID.setSampleTime(parameter.timeTriggerCanvasUpdate)
@@ -140,6 +148,8 @@ class etaMainApplication(UI.Ui_MainWindow):
     
         #self.FlowActor = actuator(12)
         self.FlowActor = actuator(18)
+        #self.tempSaturation = saturationPID.saturationPID("Temp")
+        #self.powerSaturation = saturationPID.saturation.PID("Power")
 
     def initArrays(self):
         self.time = np.array([])
@@ -148,27 +158,38 @@ class etaMainApplication(UI.Ui_MainWindow):
         self.startTime = time.time()/3600
         self.temp1 = np.array([])
         self.temp2 = np.array([])
+        self.setTemp = np.array([])
         self.powerCrop = np.array([])
         self.tempCrop = np.array([])
         self.dataPointIndex = 0
         self.floatMData = np.array([])
-        self.floatMDataTemp = np.array([])
-        self.floatMeanCorrFactor = 17
+        self.floatMDataTemp1 = np.array([])
+        self.floatMDataTemp2 = np.array([])
+        #self.floatMeanCorrFactor = 11
+        #self.floatMeanCorrFactor = 61
+        self.floatMeanCorrFactor = 4
+        self.pidUpdateCounter = 0
         pprint(self.startTime)
+        self.prevTempValue = 0
+        self.prevPowerValue = 0
     ###
 
-    def addDataPoint(self, pis, pset, temp1, temp2):
+    def addDataPoint(self, pis, pset, temp1, temp2, tset):
+        pis = pis*1000
         self.currentTime = time.time()/3600-self.startTime
         self.time = np.append(self.time, self.currentTime)
         self.isPower = np.append(self.isPower, pis)
         self.setPower = np.append(self.setPower, pset)
         self.temp1=np.append(self.temp1, temp1)
         self.temp2=np.append(self.temp2, temp2)
-        self.container.set(np.array([self.time,self.isPower,self.setPower,self.temp1, self.temp2]))
-        self.updateContainer.set(np.array([self.currentTime, pis, pset, temp1, temp2,self.automationStartTime]))
+        self.setTemp = np.append(self.setTemp, tset)
+        self.container.set(np.array([self.time,self.isPower,self.setPower,self.temp1, self.temp2,self.setTemp]))
+        self.updateContainer.set(np.array([self.currentTime, pis, pset, temp1, temp2,self.setTemp,self.automationStartTime]))
         
         self.floatMData = np.append(self.floatMData, self.floatingMeanCorr(self.isPower, self.floatMeanCorrFactor, self.dataPointIndex))
-        self.floatMDataTemp = np.append(self.floatMDataTemp, self.floatingMeanCorr(self.temp1, self.floatMeanCorrFactor, self.dataPointIndex))
+        self.floatMDataTemp1 = np.append(self.floatMDataTemp1, self.floatingMeanCorr(self.temp1, self.floatMeanCorrFactor, self.dataPointIndex))
+        self.floatMDataTemp2 = np.append(self.floatMDataTemp2, self.floatingMeanCorr(self.temp2, self.floatMeanCorrFactor, self.dataPointIndex))
+        
         #print("SHAPE OF IS POWER: ", self.isPower.shape)
         #print("FLOAT MEAN POWER: ", self.floatMData.shape)
         #print("DATA POINT INDEX: ", self.dataPointIndex)
@@ -183,10 +204,10 @@ class etaMainApplication(UI.Ui_MainWindow):
 
         if self.plotType =="Temperature":
             if self.cropFlag ==True:
-                self.tempCrop = np.array(self.cropFunction(self.time, self.temp1, self.temp2, self.cropPlotVar))
+                self.tempCrop = np.array(self.cropFunction(self.time, self.floatMDataTemp1, self.floatMDataTemp2, self.cropPlotVar, self.setTemp))
                 self.canvas.plotData(self.tempCrop[0], self.tempCrop[1], self.tempCrop[2], self.plotType)
             else:
-                self.canvas.plotData(self.time, self.temp1, self.temp2, self.plotType)
+                self.canvas.plotData(self.time, self.floatMDataTemp1, self.floatMDataTemp2, self.plotType, self.setTemp)
         self.dataPointIndex = self.dataPointIndex+1
 
     def startAutomation(self):
@@ -234,7 +255,7 @@ class etaMainApplication(UI.Ui_MainWindow):
         self.setStyle()
         self.TempPID.clear()
         self.FlowPID.clear()
-        self.TempActor.setdc(0)
+        self.TempActor.setdc(127)
         self.FlowActor.setdc(0)
         #self.MainWindow.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(62, 62, 62, 255), stop:1 rgba(114, 114, 114, 255));")
 
@@ -272,12 +293,16 @@ class etaMainApplication(UI.Ui_MainWindow):
             self.pushButton_CropPlot.setText("Crop")
             self.cropFlag = False
 
-    def cropFunction(self,time_vector, data_vector=None, data2_vector=None, cropPlotVar=10):
+    def cropFunction(self,time_vector, data_vector=None, data2_vector=None, cropPlotVar=10, data3_vector=0):
         if len(time_vector)>2*cropPlotVar:
             time_vector_cropped = time_vector[(len(time_vector) - cropPlotVar):len(time_vector)]
             data_vector_cropped = data_vector[(len(data_vector) - cropPlotVar):len(data_vector)]
             data2_vector_cropped = data2_vector[(len(data2_vector) - cropPlotVar):len(data2_vector)]
-            return time_vector_cropped, data_vector_cropped, data2_vector_cropped
+            #if data3_vector!=0:
+                #data3_vector_cropped = data3_vector[(len(data3_vector) - cropPlotVar):len(data3_vector)]
+                #return time_vector_cropped, data_vector_cropped, data2_vector_cropped, data3_vector_cropped, cropPlotVar
+            #else:
+            return time_vector_cropped, data_vector_cropped, data2_vector_cropped,cropPlotVar
         else:
             return time_vector, data_vector, data2_vector, cropPlotVar
 
@@ -423,7 +448,8 @@ class etaMainApplication(UI.Ui_MainWindow):
     
     
     def pidImpulseResponse(self):
-        self.desiredPower = 3000
+        self.desiredPower = 6000
+        self.desiredTemp = 15
         self.TempActor.setdc(255)
         self.FlowActor.setdc(0)
     
@@ -440,7 +466,71 @@ class etaMainApplication(UI.Ui_MainWindow):
         else:
             self.newArrayEntry = vector[index]
             
-        return self.newArrayEntry 
+        return self.newArrayEntry
+    
+    
+    def saturatePID(self, pidOutput, setParameter, handle=""):
+        #print("PID")
+        print("PID: ", pidOutput)
+        #print(pidOutput)
+        #print(setParameter)
+        #print(handle)
+        
+        if handle =="":
+            pass
+
+        if (handle == "Temp" and pidOutput != None):
+            setPWM_1 = pidOutput
+            if pidOutput != setParameter:
+                if pidOutput < 0:
+                    x = abs(pidOutput)
+                    setPWM_1 = x
+                else:
+                    setPWM_1 = max(min(int(setPWM_1), 255), 0)
+                    self.prevTempValue = setPWM_1
+                return setPWM_1
+            else:
+                return self.prevTempValue
+
+        if (handle =="Power" and pidOutput != None):
+            #print("PID: ", pidOutput)
+            setPWM_2 = pidOutput
+            if pidOutput != setParameter:
+                if 0 <= setParameter <= 100:
+                    setPWM_2 = max(min(int(setPWM_2), 21), 19)
+
+                if 100 < setParameter <= 200:
+                    setPWM_2 = max(min(int(setPWM_2), 25), 22)
+
+                if 200 < setParameter <= 300:
+                    setPWM_2 = max(min(int(setPWM_2), 29), 26)
+                    
+                if 300 < setParameter <= 400:
+                    setPWM_2 = max(min(int(setPWM_2), 34), 30)
+
+                if 400 < setParameter <= 600:
+                    setPWM_2 = max(min(int(setPWM_2), 37), 34)
+
+                if 600 < setParameter <= 900:
+                    setPWM_2 = max(min(int(setPWM_2), 40), 37)
+
+                if 900 < setParameter <= 3000:
+                    setPWM_2 = max(min(int(setPWM_2), 42), 38)
+
+                if 3000 < setParameter <= 6000:
+                    setPWM_2 = max(min(int(setPWM_2), 50), 46)
+
+                if 6000 < setParameter <= 9000:
+                    setPWM_2 = max(min(int(setPWM_2), 58), 50)
+
+                if setParameter > 9000:
+                    setPWM_2 = max(min(int(setPWM_2), 64), 58)
+                self.prevPowerValue = setPWM_2
+                return setPWM_2
+            else:
+                return self.prevPowerValue
+        else:
+            return 0
         
         
 
@@ -448,27 +538,48 @@ class etaMainApplication(UI.Ui_MainWindow):
         #time.sleep(3)
         while self.HeatMeter.getData1()== "'NaN', 'NaN', 'NaN', 'NaN'":
             time.sleep(0.1)
-        counter = 0
+        self.pidUpdateCounter = 3
         while True:
             ###
             if self.table.automationRunFlag ==True:
                 self.desiredPower = self.table.getCurrentSetVal()
+                self.desiredTemp = self.table.getCurrentSetTempVal()
                 #self.FlowPID.update(self.translateHeatMeter(self.HeatMeter.getData1())[0], self.desiredPower)
                 #print("MDataShape: ", self.floatMData.shape)
-                #print("MDataTempShape: ", self.floatMDataTemp.shape)
-                if self.dataPointIndex > 1:
+                #print("MDataTempShape: ", self.floatMDataTemp1.shape)
+                if self.dataPointIndex > 1:# & self.pidUpdateCounter==3:
+                    self.pidUpdateCounter = 0
                     print("###FLOW PID###")
                     self.FlowPID.update(self.floatMData[self.dataPointIndex-1], self.desiredPower)
+                    flowSatInput = self.FlowPID.output
+                    #flowVal = self.powerSaturation.saturatePID(flowSatInput, self.desiredPower)
+                    flowVal = self.saturatePID(flowSatInput, self.desiredPower,"Power")
+                    print(flowSatInput, flowVal)
+                    self.FlowActor.setdc(int(flowVal))
                     #self.FlowActor.setdc(-1*(self.FlowPID.output-255))
-                    self.FlowActor.setdc(255-(-1*self.FlowPID.output))
+                    #self.FlowActor.setdc(255-(-1*self.FlowPID.output))
+                    #flowActorVal = int(self.FlowPID.output)
+                    #self.FlowActor.setdc(int(self.FlowPID.output))
+                    #print("INPUT ACTOR: ", flowActorVal)
+                    #self.FlowActor.setdc(self.FlowPID.output)
                     print("###TEMP PID###")
-                    self.TempPID.update(self.floatMDataTemp[self.dataPointIndex-1], 0)
+                    self.TempPID.update(self.floatMDataTemp1[self.dataPointIndex-1], self.desiredTemp)
+                    tempSatInput = self.TempPID.output
+                    #tempVal = self.tempSaturation.saturatePID(tempSatInput, self.desiredTemp)
+                    tempVal = self.saturatePID(tempSatInput, self.desiredTemp,"Temp")
+                    print(tempSatInput,tempVal)
+                    self.TempActor.setdc(int(tempVal))
                     #self.TempActor.setdc(-1*(self.TempPID.output-255))
-                    self.TempActor.setdc(255-(-1*self.TempPID.output))
-                    
+                    #self.TempActor.setdc((255-(-1*self.TempPID.output)))
+                    #self.TempActor.setdc(self.TempPID.output)
+                    #self.TempActor.setdc((int(self.TempPID.output*255/60)))
+                    #self.TempActor.setdc(0)
+                    #self.TempActor.setdc(255)
+            print(self.translateHeatMeter(self.HeatMeter.getData1())[0],self.translateHeatMeter(self.HeatMeter.getData1())[1],self.translateHeatMeter(self.HeatMeter.getData1())[2],self.translateHeatMeter(self.HeatMeter.getData1())[3])
 
-            self.addDataPoint(self.translateHeatMeter(self.HeatMeter.getData1())[0], self.desiredPower,self.translateHeatMeter(self.HeatMeter.getData1())[2],self.translateHeatMeter(self.HeatMeter.getData1())[3])
+            self.addDataPoint(self.translateHeatMeter(self.HeatMeter.getData1())[1], self.desiredPower,self.translateHeatMeter(self.HeatMeter.getData1())[2],self.translateHeatMeter(self.HeatMeter.getData1())[3], self.desiredTemp)
             #self.updateContainer.set(np.array([self.translateHeatMeter(self.HeatMeter.getData3())[0], self.desiredPower,self.translateHeatMeter(self.HeatMeter.getData3())[2],self.translateHeatMeter(self.HeatMeter.getData3())[3]]))
+            #self.pidUpdateCounter = self.pidUpdateCounter+1
             time.sleep(parameter.timeTriggerCanvasUpdate)
             QApplication.processEvents()
 
